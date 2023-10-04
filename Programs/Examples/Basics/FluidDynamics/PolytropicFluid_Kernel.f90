@@ -3,9 +3,14 @@
 submodule ( PolytropicFluid_Form ) PolytropicFluid_Kernel
 
   use Basics
+  use mod_kinds, only: ik, rk
+  use mod_network, only: network_type
   
   implicit none
+  
+  type(network_type) :: net
 
+!  call net % load('/lustre/orion/ast163/scratch/ojoshua/ML_GenASiS/GenASiS_Basics/Models/model001.txt')
 contains
 
 
@@ -95,40 +100,48 @@ contains
 
 
   module procedure ComputeAuxiliaryKernel
-
-    integer ( KDI ) :: &
+    integer ( ik ) :: &
       iV
-      
-    if ( UseDevice ) then
-      
-      !$OMP OMP_TARGET_DIRECTIVE parallel do simd &
-      !$OMP schedule ( OMP_SCHEDULE_TARGET )
-      do iV = 1, size ( P )
-        P ( iV ) = E ( iV ) * ( Gamma ( iV ) - 1.0_KDR )
-        if ( N ( iV ) > 0.0_KDR ) then
-          K ( iV ) = P ( iV ) / ( N ( iV ) ** Gamma ( iV ) )
-        else
-          K ( iV ) = 0.0_KDR
-        end if
-      end do
-      !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
-    
-    else      
+   ! integer(ik) :: ik
+    real(4) :: N_real4, E_real4, Gamma_real4
+    real(rk), allocatable :: result(:)
+    call net % load('/lustre/orion/ast163/scratch/ojoshua/ML_GenASiS/GenASiS_Basics/Models/model001.txt')
 
-      !$OMP parallel do simd &
-      !$OMP schedule ( OMP_SCHEDULE_HOST )
+    if ( UseDevice ) then
+
+   !  !$OMP OMP_TARGET_DIRECTIVE parallel do simd &
+    ! !$OMP schedule ( OMP_SCHEDULE_TARGET )
+
       do iV = 1, size ( P )
-        P ( iV ) = E ( iV ) * ( Gamma ( iV ) - 1.0_KDR )
-        if ( N ( iV ) > 0.0_KDR ) then
-          K ( iV ) = P ( iV ) / ( N ( iV ) ** Gamma ( iV ) )
-        else
-          K ( iV ) = 0.0_KDR
-        end if
+        result = net % output(real([N(iV),E(iV),Gamma(iV)], kind=4))
+        !print *, result
+        P(iV)=result(1)*1.0_KDR
+        K(iV)= result(2)*1.0_KDR
+
       end do
-      !$OMP end parallel do simd
-    
+   !   !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
+    else
+
+    !  !$OMP OMP_TARGET_DIRECTIVE parallel do simd &
+   !   !$OMP schedule ( OMP_SCHEDULE_TARGET )
+
+      do iV = 1, size ( P )
+
+        N_real4 = N(iV)
+        E_real4 = E(iV)
+        Gamma_real4 = Gamma(iV)
+
+        result = net % output([N_real4, E_real4, Gamma_real4])
+        !print *, result
+        P(iV)=result(1)*1.0_KDR
+        K(iV)=result(2)*1.0_KDR
+      end do
+    !  !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
+
     end if
-      
+
+    deallocate(result)
+ 
   end procedure ComputeAuxiliaryKernel
 
 

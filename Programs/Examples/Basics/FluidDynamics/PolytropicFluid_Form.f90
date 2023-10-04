@@ -3,8 +3,15 @@ module PolytropicFluid_Form
   use Basics
   use DistributedMesh_Form
   use PressurelessFluid_Form
+  
+  use mod_network, only: network_type
 
   implicit none
+
+  type(network_type) :: net
+
+
+ ! implicit none
   private
 
     integer ( KDI ), private, parameter :: &
@@ -100,7 +107,12 @@ module PolytropicFluid_Form
           Gamma
         logical ( KDL ), intent ( in ) :: &
           UseDevice
+
       end subroutine ComputeAuxiliaryKernel
+
+
+
+
 
       module subroutine ComputeAuxiliaryFromPressureKernel ( E, K, N, P, Gamma )
         use Basics

@@ -27,7 +27,7 @@ USE_ISO_10646       ?= 0
 #-- Silo library may be  automatically included & linked by 
 #-- "module load silo" if provided, otherwise, manually put include and 
 #-- link line flag &  location below
-SILO_DIR    ?= /home/users/coe0021/localsw/poplar/silo/4.10.2_gcc9.1.0
+SILO_DIR    ?= /ccs/home/ojoshua/software/silo
 INCLUDE_SILO = -I${SILO_DIR}/include
 LIBRARY_SILO = -L${SILO_DIR}/lib -lsilo
 

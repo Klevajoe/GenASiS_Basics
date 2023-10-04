@@ -8,6 +8,7 @@ all: SineWaveAdvection SawtoothWaveAdvection RiemannProblem
 
 include $(PATH_GENASIS)/Build/Makefile_Build
 
+
 FLUID = \
   PolytropicFluid_Kernel.o \
   PolytropicFluid_Form.o \
@@ -18,7 +19,14 @@ FLUID = \
   ConservationLawStep_Kernel.o \
   ConservationLawStep_Form.o \
   ConservedFields_Template.o \
-  DistributedMesh_Form.o
+  DistributedMesh_Form.o \
+  mod_network.o \
+  mod_dense_layer.o \
+  mod_batchnorm_layer.o \
+  mod_dropout_layer.o \
+  mod_layer.o \
+  mod_random.o \
+  mod_activation.o  
 
 SineWaveAdvection: Basics.a Fluid.a SineWaveAdvection.o
 	$(LINK) $(FLAGS) \
@@ -49,6 +57,71 @@ clobber: clean
 	find . -type f $(FIND_EXEC) -name 'RiemannProblem_*' -exec rm -f '{}' \;
 
 include $(PATH_BASICS)/Makefile_Dependencies
+
+FC =ftn
+
+
+# Define the source files for each module
+# List of object files for the modules
+MODULE_OBJECTS = mod_kinds.o mod_activation.o  mod_random.o mod_layer.o mod_dropout_layer.o mod_batchnorm_layer.o mod_dense_layer.o
+
+# Default target
+all: mod_network
+
+# Target to build the executable
+mod_network: $(MODULE_OBJECTS) mod_network.o
+	$(LINK) $(FLAGS) -o $@ $^
+
+# Rules for individual module object files
+%.o: ../%.F90
+	$(FC) $(FFLAGS)  -c -o $@ $<
+
+
+
+
+mod_kinds.o: \
+   mod_kinds.F90
+
+mod_activation.o: \
+   mod_kinds.o  \
+   mod_activation.F90
+
+mod_random.o: \
+   mod_kinds.o  \
+   mod_random.F90
+
+mod_layer.o: \
+   mod_kinds.o  \
+   mod_activation.o  \
+   mod_layer.F90
+
+mod_dropout_layer.o: \
+   mod_kinds.o  \
+   mod_layer.o  \
+   mod_dropout_layer.F90 
+
+mod_batchnorm_layer.o: \
+   mod_kinds.o  \
+   mod_layer.o  \
+   mod_batchnorm_layer.F90
+
+mod_dense_layer.o: \
+   mod_kinds.o  \
+   mod_activation.o  \
+   mod_random.o \
+   mod_layer.o  \
+   mod_dense_layer.F90
+
+mod_network.o: \
+   mod_kinds.o  \
+   mod_random.o \
+   mod_activation.o  \
+   mod_layer.o  \
+   mod_dropout_layer.o \
+   mod_batchnorm_layer.o  \
+   mod_dense_layer.o  \
+   mod_network.F90
+
 
 DistributedMesh_Form.o: \
   Basics.o \
@@ -97,11 +170,20 @@ PolytropicFluid_Form.o: \
   Basics.o \
   DistributedMesh_Form.o \
   PressurelessFluid_Form.o \
+  mod_network.o \
   PolytropicFluid_Form.f90
 
 PolytropicFluid_Kernel.o: \
   Basics.o \
   PolytropicFluid_Form.o \
+  mod_kinds.o\
+  mod_random.o \
+  mod_activation.o  \
+  mod_layer.o  \
+  mod_dropout_layer.o \
+  mod_batchnorm_layer.o  \
+  mod_dense_layer.o  \
+  mod_network.o \
   PolytropicFluid_Kernel.f90
 
 Fluid.a: $(FLUID)

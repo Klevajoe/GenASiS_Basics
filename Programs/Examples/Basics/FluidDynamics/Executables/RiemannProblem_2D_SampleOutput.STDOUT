@@ -1,0 +1,107 @@
+     INFO_1: Initializing a Communicator
+                               Name  =  World
+                               Size  =         4
+     INFO_1: Parameter Verbosity found
+                             Source  =  command line
+                          Verbosity  =  INFO_2
+     INFO_1: Modifying CONSOLE
+                          Verbosity  =  INFO_2
+     INFO_1: Parameter DisplayRank not found
+                             Source  =  command line
+     INFO_1: Modifying CONSOLE
+                        DisplayRank  =         0
+     INFO_1: OpenMP environment
+                         MaxThreads  =         7
+                           nDevices  =         0
+                     OffloadEnabled  =   FALSE
+                    Selected device  =2147483647
+                           Schedule  =  runtime : guided
+                          ChunkSize  =         1
+     INFO_1: Parameter Dimensionality found
+                             Source  =  command line
+                     Dimensionality  =  2D
+     INFO_1: Opening a parameter file
+                               Name  =  RiemannProblem_2D_Program_Parameters
+     INFO_1: Cannot open file '../Parameters/RiemannProblem_2D_Program_Parameters': No such file or directory
+     INFO_1: Setting Timer parameters
+                           LevelMin  =         2
+                           LevelMax  =        10
+                    DisplayFraction  =  1.000000E-001
+     INFO_1: Starting the Program
+                               Name  =  RiemannProblem_2D
+     INFO_1: Initializing a RiemannProblem
+                          UseDevice  =   FALSE
+     INFO_1: Initializing a DistributedMesh
+       INFO_2: DistributedMesh PortalHeaderPrevious
+                             Source
+                               ( 1 ) =         1
+                               ( 2 ) =         2
+                        nChunksFrom
+                               ( 1 ) =      1024
+                               ( 2 ) =      1024
+                             Target
+                               ( 1 ) =         1
+                               ( 2 ) =         2
+                          nChunksTo
+                               ( 1 ) =      1024
+                               ( 2 ) =      1024
+       INFO_2: DistributedMesh PortalHeaderNext
+                             Source
+                               ( 1 ) =         1
+                               ( 2 ) =         2
+                        nChunksFrom
+                               ( 1 ) =      1024
+                               ( 2 ) =      1024
+                             Target
+                               ( 1 ) =         1
+                               ( 2 ) =         2
+                          nChunksTo
+                               ( 1 ) =      1024
+                               ( 2 ) =      1024
+     INFO_1: DistributedMesh Parameters
+                        nDimensions  =         2
+                             nCells
+                               ( 1 ) =      1024
+                               ( 2 ) =      1024
+                               ( 3 ) =         1
+                            nBricks
+                               ( 1 ) =         2
+                               ( 2 ) =         2
+                               ( 3 ) =         1
+                     nCellsPerBrick
+                               ( 1 ) =       512
+                               ( 2 ) =       512
+                               ( 3 ) =         1
+                       nProperCells  =    262144
+                        nGhostCells  =      4112
+                       nGhostLayers
+                               ( 1 ) =         2
+                               ( 2 ) =         2
+                               ( 3 ) =         0
+                      MinCoordinate
+                               ( 1 ) =  0.000000E+000 
+                               ( 2 ) =  0.000000E+000 
+                               ( 3 ) =  0.000000E+000 
+                      MaxCoordinate
+                               ( 1 ) =  1.000000E+000 
+                               ( 2 ) =  1.000000E+000 
+                               ( 3 ) =  0.000000E+000 
+                  BoundaryCondition  =  REFLECTING
+                 DevicesCommunicate  =   FALSE
+     INFO_1: Initializing a GridImageStream
+                               Name  =  RiemannProblem_2D
+                   WorkingDirectory  =  
+     INFO_1: Setting a GridImage grid
+                               Name  =  RiemannProblem_2D
+     INFO_1: Finished setting a GridImage grid
+                               Name  =  RiemannProblem_2D
+     INFO_1: Writing image
+     INFO_1: Creating a GridImage file for writing
+                               Name  =  RiemannProblem_2D
+                             Number  =  _0000000
+     INFO_1: Closing a GridImage file
+                               Name  =  RiemannProblem_2D
+                             Number  =  _0000000
+                             iImage  =         0
+     INFO_1: Evolving a Fluid
+       INFO_2: Solving Conservation Equations
