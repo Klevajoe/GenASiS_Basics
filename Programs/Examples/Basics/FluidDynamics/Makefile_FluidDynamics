@@ -46,7 +46,8 @@ RiemannProblem: Basics.a Fluid.a RiemannProblem.o
 	$(LINK) $(FLAGS) \
           -o RiemannProblem_$(MACHINE) \
           RiemannProblem.o RiemannProblem_Form.o \
-          Fluid.a Basics.a $(LIBRARIES)
+          ${FLUID} ${BASICS} $(LIBRARIES)
+          #Fluid.a Basics.a  $(LIBRARIES)
 
 clean:
 	rm -f *.o *.a *.mod *.ld *.smod
@@ -63,21 +64,26 @@ FC =ftn
 
 # Define the source files for each module
 # List of object files for the modules
-MODULE_OBJECTS = mod_kinds.o mod_activation.o  mod_random.o mod_layer.o mod_dropout_layer.o mod_batchnorm_layer.o mod_dense_layer.o
-
-# Default target
-all: mod_network
-
-# Target to build the executable
-mod_network: $(MODULE_OBJECTS) mod_network.o
-	$(LINK) $(FLAGS) -o $@ $^
-
-# Rules for individual module object files
-%.o: ../%.F90
-	$(FC) $(FFLAGS)  -c -o $@ $<
+MODULE_OBJECTS = \
+mod_kinds.o \
+mod_activation.o \
+mod_random.o \
+mod_layer.o \
+mod_dropout_layer.o \
+mod_batchnorm_layer.o \
+mod_dense_layer.o
 
 
-
+#--# Default target
+#--all: mod_network
+#--
+#--# Target to build the executable
+#--mod_network: $(MODULE_OBJECTS) mod_network.o
+#--	$(LINK) $(FLAGS) -o $@ $^
+#--
+#--# Rules for individual module object files
+#--%.o: ../%.F90
+#--	$(FC) $(FFLAGS)  -c -o $@ $<
 
 mod_kinds.o: \
    mod_kinds.F90

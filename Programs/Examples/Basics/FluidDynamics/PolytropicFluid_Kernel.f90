@@ -105,7 +105,7 @@ contains
    ! integer(ik) :: ik
     real(4) :: N_real4, E_real4, Gamma_real4
     real(rk), allocatable :: result(:)
-    call net % load('/lustre/orion/ast163/scratch/ojoshua/ML_GenASiS/GenASiS_Basics/Models/model001.txt')
+    
 
     if ( UseDevice ) then
 
@@ -113,7 +113,7 @@ contains
     ! !$OMP schedule ( OMP_SCHEDULE_TARGET )
 
       do iV = 1, size ( P )
-        result = net % output(real([N(iV),E(iV),Gamma(iV)], kind=4))
+        result = Network % output (real([N(iV),E(iV),Gamma(iV)], kind=4))
         !print *, result
         P(iV)=result(1)*1.0_KDR
         K(iV)= result(2)*1.0_KDR
@@ -131,7 +131,7 @@ contains
         E_real4 = E(iV)
         Gamma_real4 = Gamma(iV)
 
-        result = net % output([N_real4, E_real4, Gamma_real4])
+        result = Network % output([N_real4, E_real4, Gamma_real4])
         !print *, result
         P(iV)=result(1)*1.0_KDR
         K(iV)=result(2)*1.0_KDR

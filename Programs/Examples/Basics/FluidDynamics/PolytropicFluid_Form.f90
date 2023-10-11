@@ -8,9 +8,6 @@ module PolytropicFluid_Form
 
   implicit none
 
-  type(network_type) :: net
-
-
  ! implicit none
   private
 
@@ -32,6 +29,8 @@ module PolytropicFluid_Form
       ADIABATIC_INDEX      = 0, &
       SOUND_SPEED          = 0, &
       POLYTROPIC_PARAMETER = 0
+    type ( Network_Type ) :: &
+      Network
   contains
     procedure, public, pass :: &
       InitializeWithMesh
@@ -95,9 +94,11 @@ module PolytropicFluid_Form
       end subroutine ComputePrimitiveKernel
 
       module subroutine ComputeAuxiliaryKernel &
-                   ( P, K, N, E, Gamma, UseDevice )
+                   ( Network, P, K, N, E, Gamma, UseDevice )
         use Basics
         implicit none
+        type ( Network_Type ), intent ( inout ) :: &
+          Network
         real ( KDR ), dimension ( : ), intent ( inout ) :: &
           P, &
           K
@@ -111,10 +112,8 @@ module PolytropicFluid_Form
       end subroutine ComputeAuxiliaryKernel
 
 
-
-
-
-      module subroutine ComputeAuxiliaryFromPressureKernel ( E, K, N, P, Gamma )
+      module subroutine ComputeAuxiliaryFromPressureKernel &
+                          ( E, K, N, P, Gamma )
         use Basics
         implicit none
         real ( KDR ), dimension ( : ), intent ( inout ) :: &
@@ -224,6 +223,8 @@ contains
              VariableOption = Variable, NameOption = NameOption, &
              ClearOption = ClearOption, UnitOption = VariableUnit, &
              VectorIndicesOption = VectorIndicesOption )
+             
+    call PF % Network % Load ( '../../../../../Models/model001.txt' )
 
   end subroutine InitializeWithMesh
 
@@ -307,7 +308,8 @@ contains
       UseDevice = UseDeviceOption
     
     call ComputeAuxiliaryKernel &
-           ( Value ( :, CF % PRESSURE ), &
+           ( CF % Network, &
+             Value ( :, CF % PRESSURE ), &
              Value ( :, CF % POLYTROPIC_PARAMETER ), &
              Value ( :, CF % COMOVING_DENSITY ), &
              Value ( :, CF % INTERNAL_ENERGY ), &
