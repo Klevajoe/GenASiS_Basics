@@ -224,7 +224,7 @@ contains
              ClearOption = ClearOption, UnitOption = VariableUnit, &
              VectorIndicesOption = VectorIndicesOption )
              
-    call PF % Network % Load ( '../../../../../Models/model001.txt' )
+    call PF % Network % Load ( '../../../../../Models/model104.txt' )
 
   end subroutine InitializeWithMesh
 

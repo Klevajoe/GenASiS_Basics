@@ -6,7 +6,7 @@ module mod_network
   use mod_dense_layer, only: Dense
   use mod_dropout_layer, only: Dropout
   use mod_batchnorm_layer, only: BatchNorm
-!  use mod_parallel, only: tile_indices
+ ! use mod_parallel, only: tile_indices
 
   implicit none
 
@@ -37,7 +37,7 @@ module mod_network
     procedure, public, pass(self) :: output
     procedure, public, pass(self) :: save
     ! procedure, public, pass(self) :: set_activation
- !   procedure, public, pass(self) :: sync
+  !  procedure, public, pass(self) :: sync
 
   end type network_type
 
@@ -56,7 +56,7 @@ contains
 
     call net % init(layer_names, layer_info)
 
-!    call net % sync(1)
+ !   call net % sync(1)
 
   end function net_constructor
 
@@ -335,7 +335,7 @@ contains
   end subroutine save
 
 
- ! subroutine sync(self, image)
+!  subroutine sync(self, image)
  !   ! Broadcasts network weights and biases from
  !   ! specified image to all others.
  !   class(network_type), intent(in out) :: self
@@ -344,8 +344,8 @@ contains
  !   if (num_images() == 1) return
  !   layers: do n = 1, size(self % layers) ! changed from dims
 !#ifdef CAF
-!      call co_broadcast(self % layers(n) % p % b, image)
-!      call co_broadcast(self % layers(n) % p % w, image)
+ !     call co_broadcast(self % layers(n) % p % b, image)
+ !     call co_broadcast(self % layers(n) % p % w, image)
 !#endif
 !    end do layers
 !  end subroutine sync

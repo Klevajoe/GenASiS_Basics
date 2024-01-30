@@ -122,8 +122,8 @@ contains
    !   !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
     else
 
-    !  !$OMP OMP_TARGET_DIRECTIVE parallel do simd &
-   !   !$OMP schedule ( OMP_SCHEDULE_TARGET )
+   !   !$OMP OMP_TARGET_DIRECTIVE parallel do simd &
+    !  !$OMP schedule ( OMP_SCHEDULE_TARGET )
 
       do iV = 1, size ( P )
 
@@ -136,7 +136,7 @@ contains
         P(iV)=result(1)*1.0_KDR
         K(iV)=result(2)*1.0_KDR
       end do
-    !  !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
+     ! !$OMP end OMP_TARGET_DIRECTIVE parallel do simd
 
     end if
 
